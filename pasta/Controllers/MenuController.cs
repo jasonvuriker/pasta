@@ -12,6 +12,7 @@ namespace pasta.Controllers;
 public class MenuController : ControllerBase
 {
     [HttpGet]
+    [SwaggerOperation("Get all menu")]
     [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetMenuExample))]
     [SwaggerResponse((int)HttpStatusCode.OK, "Get all menu", typeof(IList<MenuDto>))]
     [SwaggerResponse((int)HttpStatusCode.NotFound, "Menu not found")]

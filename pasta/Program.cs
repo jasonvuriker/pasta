@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using pasta.Examples;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,23 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
 
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("v"),
+        new HeaderApiVersionReader("x-api-version"),
+        new MediaTypeApiVersionReader("x-api-version"));
+})
+.AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 
 var app = builder.Build();
 
@@ -61,7 +79,8 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = "docs";
         options.SpecUrl = "/swagger/v1/swagger.json";
     });
-};
+}
+;
 
 app.UseHttpsRedirection();
 

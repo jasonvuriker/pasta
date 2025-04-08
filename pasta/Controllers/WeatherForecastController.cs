@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace pasta.Controllers
 {
@@ -19,6 +20,7 @@ namespace pasta.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [SwaggerIgnore]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
